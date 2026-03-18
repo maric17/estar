@@ -1,0 +1,19 @@
+// src/styles/_variables.scss
+
+// Colors
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$info-color: #17a2b8;
+
+// Fonts
+$font-stack-sans: var(--font-geist-sans), Inter, Roboto, sans-serif;
+$font-stack-mono: var(--font-geist-mono), Courier New, monospace;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
