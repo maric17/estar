@@ -36,7 +36,7 @@ const ImpactTracker = () => {
             <Container>
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
                     {/* Left: Timeline */}
-                    <div className="w-full lg:w-5/12">
+                    <div className="w-full lg:w-[35%]">
                         <div className={`mb-12 reveal-on-scroll fade-up ${isVisible ? 'is-visible' : ''}`}>
                             <h2 className="text-5xl font-black mb-6 text-white tracking-tighter">Nakhon Sawan</h2>
                             <p className="paragraph max-w-2xl text-white/50 leading-relaxed italic">
@@ -80,7 +80,7 @@ const ImpactTracker = () => {
                     </div>
 
                     {/* Right: Interactive SVG Map */}
-                    <div className="w-full lg:w-7/12 flex flex-col justify-center gap-12">
+                    <div className="w-full lg:w-[65%] flex flex-col justify-center gap-12">
                         <div className={`relative w-full aspect-[4/3] rounded-3xl overflow-hidden border border-white/5 group reveal-on-scroll scale-in delay-300 ${isVisible ? 'is-visible' : ''}`}>
                             <NakhonSawanSvgMap 
                                 activeStep={activeStep}

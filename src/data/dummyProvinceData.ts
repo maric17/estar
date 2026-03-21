@@ -4,6 +4,7 @@ export interface DistrictStats {
   joined: string;
   baptized: string;
   coordinates: [number, number]; // [lng, lat]
+  id: string;
 }
 
 export interface TimelineStateData {
@@ -30,9 +31,9 @@ export const NAKHON_SAWAN_DUMMY_DATA: Record<number, TimelineStateData> = {
       "Projected 311 village house churches"
     ],
     districts: [
-      { name: "Lat Yao", churches: 0, joined: "0", baptized: "0", coordinates: [99.7891, 15.7516] },
-      { name: "Tak Fa", churches: 0, joined: "0", baptized: "0", coordinates: [100.4851, 15.3400] },
-      { name: "Khaisali", churches: 0, joined: "0", baptized: "0", coordinates: [100.6500, 15.5800] }
+      { id: "lat-yao", name: "Lat Yao", churches: 0, joined: "0", baptized: "0", coordinates: [99.7891, 15.7516] },
+      { id: "tak-fa", name: "Tak Fa", churches: 0, joined: "0", baptized: "0", coordinates: [100.4851, 15.3400] },
+      { id: "khaisali", name: "Khaisali", churches: 0, joined: "0", baptized: "0", coordinates: [100.6500, 15.5800] }
     ]
   },
   1: { // One Year In
@@ -48,9 +49,9 @@ export const NAKHON_SAWAN_DUMMY_DATA: Record<number, TimelineStateData> = {
       "Exceeded expectations by completing 2026 goals two years early"
     ],
     districts: [
-      { name: "Lat Yao", churches: 126, joined: "1,489", baptized: "855", coordinates: [99.7891, 15.7516] },
-      { name: "Tak Fa", churches: 107, joined: "1,268", baptized: "717", coordinates: [100.4851, 15.3400] },
-      { name: "Khaisali", churches: 92, joined: "1,025", baptized: "572", coordinates: [100.6500, 15.5800] }
+      { id: "lat-yao", name: "Lat Yao", churches: 126, joined: "1,489", baptized: "855", coordinates: [99.7891, 15.7516] },
+      { id: "tak-fa", name: "Tak Fa", churches: 107, joined: "1,268", baptized: "717", coordinates: [100.4851, 15.3400] },
+      { id: "khaisali", name: "Khaisali", churches: 92, joined: "1,025", baptized: "572", coordinates: [100.6500, 15.5800] }
     ]
   },
   2: { // Today
@@ -66,9 +67,9 @@ export const NAKHON_SAWAN_DUMMY_DATA: Record<number, TimelineStateData> = {
       "Reached over 3,000 new believers"
     ],
     districts: [
-      { name: "Lat Yao", churches: 142, joined: "1,882", baptized: "1,357", coordinates: [99.7891, 15.7516] },
-      { name: "Tak Fa", churches: 119, joined: "1,633", baptized: "1,074", coordinates: [100.4851, 15.3400] },
-      { name: "Khaisali", churches: 100, joined: "1,408", baptized: "860", coordinates: [100.6500, 15.5800] }
+      { id: "lat-yao", name: "Lat Yao", churches: 142, joined: "1,882", baptized: "1,357", coordinates: [99.7891, 15.7516] },
+      { id: "tak-fa", name: "Tak Fa", churches: 119, joined: "1,633", baptized: "1,074", coordinates: [100.4851, 15.3400] },
+      { id: "khaisali", name: "Khaisali", churches: 100, joined: "1,408", baptized: "860", coordinates: [100.6500, 15.5800] }
     ]
   },
   3: { // Next Year Expectations
@@ -84,9 +85,9 @@ export const NAKHON_SAWAN_DUMMY_DATA: Record<number, TimelineStateData> = {
       "Continued exponential growth beyond initial donation"
     ],
     districts: [
-      { name: "Lat Yao", churches: 155, joined: "2,600", baptized: "1,800", coordinates: [99.7891, 15.7516] },
-      { name: "Tak Fa", churches: 125, joined: "2,400", baptized: "1,450", coordinates: [100.4851, 15.3400] },
-      { name: "Khaisali", churches: 105, joined: "2,000", baptized: "1,250", coordinates: [100.6500, 15.5800] }
+      { id: "lat-yao", name: "Lat Yao", churches: 155, joined: "2,600", baptized: "1,800", coordinates: [99.7891, 15.7516] },
+      { id: "tak-fa", name: "Tak Fa", churches: 125, joined: "2,400", baptized: "1,450", coordinates: [100.4851, 15.3400] },
+      { id: "khaisali", name: "Khaisali", churches: 105, joined: "2,000", baptized: "1,250", coordinates: [100.6500, 15.5800] }
     ]
   }
 };
