@@ -3,29 +3,40 @@
 import React, { useState } from 'react';
 import { Church, Megaphone, UserRound } from 'lucide-react';
 import { NAKHON_SAWAN_SVG_DATA } from '@/data/nakhonSawanPaths';
-import { NAKHON_SAWAN_DUMMY_DATA } from '@/data/dummyProvinceData';
+import { NAKHON_SAWAN_DUMMY_DATA, DistrictStats } from '@/data/dummyProvinceData';
 
 interface NakhonSawanSvgMapProps {
-    onDistrictSelect: (name: string) => void;
+    onDistrictSelect?: (name: string) => void;
     activeDistrict?: string | null;
-    activeStep: number;
+    activeStep?: number;
+    customDistrictsData?: DistrictStats[];
 }
 
-const NakhonSawanSvgMap: React.FC<NakhonSawanSvgMapProps> = ({ onDistrictSelect, activeDistrict, activeStep }) => {
+const NakhonSawanSvgMap: React.FC<NakhonSawanSvgMapProps> = ({ 
+    onDistrictSelect, 
+    activeDistrict, 
+    activeStep = 2,
+    customDistrictsData
+}) => {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const [stickyPos, setStickyPos] = useState({ x: 0, y: 0 });
 
     const handleMouseMove = (e: React.MouseEvent) => {
         const rect = e.currentTarget.getBoundingClientRect();
-        setMousePos({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top
-        });
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        setMousePos({ x, y });
     };
 
     const hoveredDistrict = NAKHON_SAWAN_SVG_DATA.find(d => d.id === hoveredId);
-    // Use data from the current active timeline step
-    const districtStats = NAKHON_SAWAN_DUMMY_DATA[activeStep]?.districts.find(d => d.name === hoveredDistrict?.name);
+    const activeDistrictData = NAKHON_SAWAN_SVG_DATA.find(d => d.name === activeDistrict);
+    const displayDistrict = hoveredDistrict || activeDistrictData;
+    
+    // Use custom data if provided, otherwise fallback to timeline data
+    const districtStats = customDistrictsData 
+        ? customDistrictsData.find(d => d.name === displayDistrict?.name)
+        : NAKHON_SAWAN_DUMMY_DATA[activeStep]?.districts.find(d => d.name === displayDistrict?.name);
 
     return (
         <div 
@@ -34,7 +45,7 @@ const NakhonSawanSvgMap: React.FC<NakhonSawanSvgMapProps> = ({ onDistrictSelect,
         >
             <svg 
                 viewBox="0 0 500 450"
-                className="w-full h-full"
+                className="w-full h-full max-h-[700px]"
                 xmlns="http://www.w3.org/2000/svg"
             >
                 {/* District Paths */}
@@ -46,14 +57,17 @@ const NakhonSawanSvgMap: React.FC<NakhonSawanSvgMapProps> = ({ onDistrictSelect,
                         <path
                             key={district.id}
                             d={district.path}
-                            className={`transition-all duration-300 cursor-pointer stroke-[0.5] stroke-black/20
+                            className={`transition-all duration-300 cursor-pointer stroke-[0.5] stroke-black/20 origin-center
                                 ${isSelected || isHovered
-                                    ? 'fill-white z-20 shadow-2xl' 
+                                    ? 'fill-white z-20 shadow-2xl scale-[1.05]' 
                                     : 'fill-[#3D3D3D]'
                                 }`}
-                            onMouseEnter={() => setHoveredId(district.id)}
+                             onMouseEnter={() => setHoveredId(district.id)}
                             onMouseLeave={() => setHoveredId(null)}
-                            onClick={() => onDistrictSelect(district.name)}
+                            onClick={() => {
+                                onDistrictSelect?.(district.name);
+                                setStickyPos(mousePos);
+                            }}
                         />
                     );
                 })}
@@ -68,17 +82,17 @@ const NakhonSawanSvgMap: React.FC<NakhonSawanSvgMapProps> = ({ onDistrictSelect,
             </div>
 
             {/* Premium Hover Card (Matches Screenshot Style) */}
-            {hoveredId && (
+            {displayDistrict && (
                 <div 
-                    className="absolute z-50 pointer-events-none transition-transform duration-75"
+                    className={`absolute z-50 pointer-events-none transition-all duration-300 ${!hoveredId && activeDistrict ? 'opacity-100 scale-100' : (hoveredId ? 'opacity-100 duration-75' : 'opacity-0 scale-95')}`}
                     style={{
-                        left: `${mousePos.x + 20}px`,
-                        top: `${mousePos.y - 20}px`,
+                        left: `${(hoveredId ? mousePos.x : stickyPos.x) + 20}px`,
+                        top: `${(hoveredId ? mousePos.y : stickyPos.y) - 20}px`,
                     }}
                 >
                     <div className="bg-white rounded-[32px] p-6 shadow-2xl border border-black/5 animate-in fade-in zoom-in-95 duration-200">
                         <h4 className="text-xl font-black text-black mb-3 tracking-tighter">
-                            {hoveredDistrict?.name}
+                            {displayDistrict?.name}
                         </h4>
                         
                         <div className="flex flex-col gap-2">

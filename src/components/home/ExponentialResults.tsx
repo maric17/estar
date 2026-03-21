@@ -1,18 +1,19 @@
 'use client';
 
-import React from 'react';
-import Image from 'next/image';
+import React, { useState } from 'react';
 import { Church, Megaphone, UserRound } from 'lucide-react';
 import Container from '@/components/layout/Container';
-import nakhonSawanImage from '@/assets/images/NakhonSawan.png';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import NakhonSawanSvgMap from './NakhonSawanSvgMap';
 
 const ExponentialResults = () => {
     const { ref, isVisible } = useScrollReveal();
+    const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
+
     const districts = [
-        { name: "Lat Yao", churches: 142, members: "1,882", believers: "1,357", top: "45%", left: "5%" },
-        { name: "Tak Fa", churches: 119, members: "1,633", believers: "1,074", top: "60%", left: "38%" },
-        { name: "Khaisali", churches: 100, members: "1,408", believers: "860", top: "52%", left: "75%" }
+        { id: "latyao", name: "Lat Yao", churches: 142, joined: "1,882", baptized: "1,357", coordinates: [0, 0] as [number, number] },
+        { id: "takfa", name: "Tak Fa", churches: 119, joined: "1,633", baptized: "1,074", coordinates: [0, 0] as [number, number] },
+        { id: "khaisali", name: "Khaisali", churches: 100, joined: "1,408", baptized: "860", coordinates: [0, 0] as [number, number] }
     ];
 
     const totals = [
@@ -25,52 +26,22 @@ const ExponentialResults = () => {
         <section ref={ref} className="bg-black py-24 border-t border-white/5 overflow-hidden">
             <Container>
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
-                    {/* Left: Map Visualization */}
-                    <div className="w-full lg:w-1/2">
-                        <div className="relative aspect-[4/3] w-full">
-                            <div className={`absolute inset-0 opacity-40 grayscale reveal-on-scroll scale-in ${isVisible ? 'is-visible' : ''}`}>
-                                <Image 
-                                    src={nakhonSawanImage} 
-                                    alt="Nakhon Sawan Map" 
-                                    fill 
-                                    className="object-contain"
+                    {/* Left: Interactive Map Visualization */}
+                    <div className="w-full lg:w-[60%]">
+                        <div className={`relative aspect-[4/3] w-full rounded-3xl overflow-hidden bg-[#1A1A1A] reveal-on-scroll scale-in ${isVisible ? 'is-visible' : ''}`}>
+                            <div className="absolute inset-0 p-8">
+                                <NakhonSawanSvgMap 
+                                    activeStep={2}
+                                    activeDistrict={selectedDistrict}
+                                    onDistrictSelect={(name) => setSelectedDistrict(name === selectedDistrict ? null : name)}
+                                    customDistrictsData={districts}
                                 />
                             </div>
-
-                            {/* District Labels */}
-                            {districts.map((district, idx) => (
-                                <div 
-                                    key={idx} 
-                                    className={`absolute p-4 bg-white rounded-2xl shadow-2xl text-black min-w-[120px] transition-transform hover:scale-105 reveal-on-scroll scale-in ${isVisible ? 'is-visible' : ''}`}
-                                    style={{ 
-                                        top: district.top, 
-                                        left: district.left,
-                                        transitionDelay: `${200 + (idx * 150)}ms`
-                                    }}
-                                >
-                                    <p className="text-[10px] font-black uppercase tracking-tighter opacity-40 mb-1">{district.name}</p>
-                                    <div className="space-y-1">
-                                        <div className="flex items-center gap-2">
-                                            <Church size={12} className="opacity-40" />
-                                            <span className="text-[13px] font-black">{district.churches}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Megaphone size={12} className="opacity-40" />
-                                            <span className="text-[13px] font-black">{district.members}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <UserRound size={12} className="opacity-40" />
-                                            <span className="text-[13px] font-black">{district.believers}</span>
-                                        </div>
-                                    </div>
-                                    <div className="absolute -bottom-1.5 left-4 w-3 h-3 bg-white rotate-45" />
-                                </div>
-                            ))}
                         </div>
                     </div>
 
                     {/* Right: Content & Stats */}
-                    <div className="w-full lg:w-1/2">
+                    <div className="w-full lg:w-[40%]">
                         <div className="max-w-xl">
                             <h2 className={`heading-1 mb-8 text-white leading-[1.1] reveal-on-scroll fade-up ${isVisible ? 'is-visible' : ''}`}>Exponential Results Beyond</h2>
                             <div className="space-y-6 mb-12">
